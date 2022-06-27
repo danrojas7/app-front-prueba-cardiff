@@ -1,0 +1,92 @@
+<div class="buttons-group">
+  <button pButton type="button" class="p-button-info" (click)="showNewPersonDialog()">Adicionar</button>
+</div>
+
+<p-table #dt [value]="personList" responsiveLayout="scroll" dataKey="id" styleClass="p-datatable-customers"
+  [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
+  responsiveLayout="scroll" [paginator]="true"
+  currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [filterDelay]="0">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>#</th>
+      <th>Nombres</th>
+      <th>Apellidos</th>
+      <th>Cédula</th>
+      <th>Genero</th>
+      <th>Edad</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-person>
+    <tr>
+      <td>{{ person.number }}</td>
+      <td>{{ person.firstName }}</td>
+      <td>{{ person.lastName }}</td>
+      <td>{{ person.documentNumber }}</td>
+      <td>{{ person.genre }}</td>
+      <td>{{ person.age }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog header="Adicionar nueva persona" [(visible)]="displayNewPersonDialog" [style]="{width: '30vw'}">
+  <form [formGroup]="newPersonFormGroup" (ngSubmit)="save(newPersonFormGroup.value)">
+    <div class="field">
+      <label for="firstName" class="block">Nombres:</label>
+      <input id="firstName" type="text" class="p-inputtext-sm full-width" pInputText formControlName="firstName" />
+      <div *ngFor="let validation of validationMessages.firstName">
+        <small id="firstName-help" class="p-error block" *ngIf="newPersonFormGroup.controls['firstName'].hasError(validation.type) &&
+          (newPersonFormGroup.controls['firstName'].dirty || newPersonFormGroup.controls['firstName'].touched)">
+          {{ validation.message }}
+        </small>
+      </div>
+    </div>
+    <div class="field">
+      <label for="lastName" class="block">Apellidos:</label>
+      <input id="lastName" type="text" class="p-inputtext-sm full-width" pInputText formControlName="lastName" />
+      <div *ngFor="let validation of validationMessages.lastName">
+        <small id="lastName-help" class="p-error block" *ngIf="newPersonFormGroup.controls['lastName'].hasError(validation.type) &&
+          (newPersonFormGroup.controls['lastName'].dirty || newPersonFormGroup.controls['lastName'].touched)">
+          {{ validation.message }}
+        </small>
+      </div>
+    </div>
+    <div class="field">
+      <label for="documentNumber" class="block">Cédula:</label>
+      <input id="documentNumber" type="text" class="p-inputtext-sm" pInputText formControlName="documentNumber" />
+      <div *ngFor="let validation of validationMessages.documentNumber">
+        <small id="documentNumber-help" class="p-error block"
+          *ngIf="newPersonFormGroup.controls['documentNumber'].hasError(validation.type) &&
+          (newPersonFormGroup.controls['documentNumber'].dirty || newPersonFormGroup.controls['documentNumber'].touched)">
+          {{ validation.message }}
+        </small>
+      </div>
+    </div>
+    <div class=" field">
+      <label for="genre" class="block">Genero:</label>
+      <p-dropdown [options]="genres" optionLabel="name" optionValue="code" formControlName="genre"
+        placeholder="Seleccionar"></p-dropdown>
+      <div *ngFor="let validation of validationMessages.genre">
+        <small id="genre-help" class="p-error block" *ngIf="newPersonFormGroup.controls['genre'].hasError(validation.type) &&
+          (newPersonFormGroup.controls['genre'].dirty || newPersonFormGroup.controls['genre'].touched)">
+          {{ validation.message }}
+        </small>
+      </div>
+    </div>
+    <div class="field">
+      <label for="age" class="block">Edad:</label>
+      <input id="age" type="text" class="p-inputtext-sm" pInputText formControlName="age" />
+      <div *ngFor="let validation of validationMessages.age">
+        <small id="age-help" class="p-error block" *ngIf="newPersonFormGroup.controls['age'].hasError(validation.type) &&
+          (newPersonFormGroup.controls['age'].dirty || newPersonFormGroup.controls['age'].touched)">
+          {{ validation.message }}
+        </small>
+      </div>
+    </div>
+    <div class="field">
+      <p-button pRipple type="submit" [disabled]="!newPersonFormGroup.valid" label="Guardar"></p-button>
+      <p-button pRipple type="button" label="Cancelar" class="p-button-secondary" (click)="hideNewPersonDialog()">
+      </p-button>
+    </div>
+  </form>
+
+</p-dialog>
